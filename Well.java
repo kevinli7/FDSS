@@ -10,6 +10,7 @@ import java.util.TreeMap;
  */
 public class Well {
 	TreeMap<Double, Double> ts = new TreeMap<Double, Double>();
+	Double netSignal;
 
 	/**
 	 * Constructor for a well.
@@ -24,4 +25,30 @@ public class Well {
 		}
 	}
 
+	/**
+	 *
+	 */
+	public Double getNetSignal(Double addTime) {
+		Double[] maxs = getMax(addTime);
+		return maxs[1] - maxs[0];
+	}
+
+	/**
+	 *
+	 */
+	public Double[] getMax(Double addTime) {
+		Double[] max = new Double[] { 0d, 0d };
+		Double holder;
+		int index = 0;
+		for (Double time : ts.keySet()) {
+			if (time > addTime) {
+				index = 1; 
+			}
+			holder = ts.get(time);
+			if (max[index] < holder) {
+				max[index] = holder;
+			}
+		}
+		return max;
+	}
 }

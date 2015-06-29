@@ -1,5 +1,3 @@
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 import java.nio.file.Files;
@@ -27,6 +25,7 @@ public class Plate {
 	 * Does most of the heavy lifting for the class itself by initalizing data
 	 *
 	 * @param filename is name of the raw data .txt file
+	 * THIS ASSUMES THE FILENAME IS A DATAFILE THAT IS OF THE HAMAMATSU FORMAT
 	 */
 	public Plate(String filename) {
 		List<String> rawData;

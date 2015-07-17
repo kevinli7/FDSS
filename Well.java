@@ -41,7 +41,7 @@ public class Well {
 		int startIndex = (int) Math.floor(start/interval);
 		int endIndex = (int) Math.floor(end/interval);
 		double curr = 1 << 32;
-		for (; startIndex <= endIndex; startIndex++) {
+		for (; startIndex < endIndex; startIndex++) {
 			if (data[startIndex] > curr) {
 				curr = data[startIndex];
 			}

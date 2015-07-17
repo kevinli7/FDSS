@@ -23,6 +23,7 @@ public class Plate {
 
 	/* matches either unix/mac or windows line separators */
     private static final String DELIMITER = "	";
+    private static final String FILE_LOCATION = "test_files/";
 
 	/**
 	 * Constructor for the Plate Class
@@ -101,7 +102,7 @@ public class Plate {
 		return -1;
 	}
 
-	   /**
+	 /**
      * Replaces all text in the existing file with the given text.
      */
     private static void writeFile(String fileName, String fileText) {
@@ -121,31 +122,64 @@ public class Plate {
         }
     }
 
+    public int getSize() {
+    	return wells[0][0].data.length;
+    }
+
+    /**
+     * 
+     */
+    private static void writeMaxFile(String filename, int addition) {
+    	Plate p = new Plate(FILE_LOCATION + filename);
+    	StringBuilder sb = new StringBuilder();
+    	int[][] timepoints = new int[][] {{0, addition}, {addition, p.getSize()}};
+    	int start, end;
+    	for (int[] ranges : timepoints) {
+			start = ranges[0];
+			end = ranges[1];
+			sb.append(String.format("%1d-%2d\n", start, end));
+			for (int i = 0; i < 16; i++) {
+				for (int j = 0; j < 24; j++) {
+					sb.append(String.format("%1f, ", p.wells[j][i].getMax(start, end)));
+				}
+				sb.append("\n");
+			}
+			sb.append("\n");
+		}
+		String output = String.format("%1s.csv", filename);
+		writeFile(output, sb.toString());
+    }
+
 	/**
 	 * A simple testing suite for the Plate class
 	 *
 	 * @param args has no intended purpose
 	 */
 	public static void main(String[] args) {
-		String filename = "test_files/TCR15062901RAW.TXT";
-		Plate test = new Plate(filename);
-		StringBuilder sb = new StringBuilder();
-		int start, end;
-		int[][] timepoints = new int[][] {{1, 10}, {10, 190}, {180, 190}};
-		for (int[] ranges : timepoints) {
-			start = ranges[0];
-			end = ranges[1];
-			sb.append(String.format("%1d-%2d\n", start, end));
-			for (int i = 0; i < 16; i++) {
-				for (int j = 0; j < 24; j++) {
-					sb.append(String.format("%1f, ", test.wells[j][i].getMax(start, end	)));
-				}
-				sb.append("\n");
-			}
-			sb.append("\n");
+		String[] files = {"11.TXT", "12.TXT", "13.TXT", "14.TXT", "21.TXT", "22.TXT", "23.TXT", 
+						  "24.TXT", "31.TXT", "32.TXT", "33.TXT", "34.TXT", "35.TXT"};
+		for (String file : files) {
+			writeMaxFile(file, 10);
 		}
-		String output = "TCR15063001 Max.csv";
-		writeFile(output, sb.toString());
+		// String filename = "test_files/TCR15062901RAW.TXT";
+		// Plate test = new Plate(filename);
+		// StringBuilder sb = new StringBuilder();
+		// int start, end;
+		// int[][] timepoints = new int[][] {{1, 10}, {10, 190}, {180, 190}};
+		// for (int[] ranges : timepoints) {
+		// 	start = ranges[0];
+		// 	end = ranges[1];
+		// 	sb.append(String.format("%1d-%2d\n", start, end));
+		// 	for (int i = 0; i < 16; i++) {
+		// 		for (int j = 0; j < 24; j++) {
+		// 			sb.append(String.format("%1f, ", test.wells[j][i].getMax(start, end	)));
+		// 		}
+		// 		sb.append("\n");
+		// 	}
+		// 	sb.append("\n");
+		// }
+		// String output = "TCR15063001 Max.csv";
+		// writeFile(output, sb.toString());
 		// for (Double time : t.ts.keySet()) {
 		// 	System.out.println(String.format("%1f, %2f", time, t.ts.get(time)));
 		// }

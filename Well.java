@@ -11,6 +11,8 @@ import java.util.TreeMap;
 public class Well {
 	TreeMap<Double, Double> ts = new TreeMap<Double, Double>();
 	Double netSignal;
+	Double interval = 1.0;
+	Double[] data;
 
 	/**
 	 * Constructor for a well.
@@ -22,6 +24,7 @@ public class Well {
 	public Well(Double[] time, Double[] data) {
 		for (int i = 0; i < time.length; i++) {
 			ts.put(time[i], data[i]);
+			this.data = data;
 		}
 	}
 
@@ -33,6 +36,18 @@ public class Well {
 		return maxs[1] - maxs[0];
 	}
 
+
+	public double getMax(int start, int end) {
+		int startIndex = (int) Math.floor(start/interval);
+		int endIndex = (int) Math.floor(end/interval);
+		double curr = 1 << 32;
+		for (; startIndex <= endIndex; startIndex++) {
+			if (data[startIndex] > curr) {
+				curr = data[startIndex];
+			}
+		}
+		return curr;
+	}
 	/**
 	 *
 	 */

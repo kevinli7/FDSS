@@ -1,4 +1,8 @@
+import java.lang.StringBuilder;
+
 import java.io.IOException;
+import java.io.File;
+import java.io.FileWriter;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -97,15 +101,51 @@ public class Plate {
 		return -1;
 	}
 
+	   /**
+     * Replaces all text in the existing file with the given text.
+     */
+    private static void writeFile(String fileName, String fileText) {
+        FileWriter fw = null;
+        try {
+            File f = new File(fileName);
+            fw = new FileWriter(f, false);
+            fw.write(fileText);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 	/**
 	 * A simple testing suite for the Plate class
 	 *
 	 * @param args has no intended purpose
 	 */
 	public static void main(String[] args) {
-		String filename = "test_files/062215_h1.txt";
+		String filename = "test_files/TCR15062901RAW.TXT";
 		Plate test = new Plate(filename);
-		Well t = test.wells[7][3];
+		StringBuilder sb = new StringBuilder();
+		int start, end;
+		int[][] timepoints = new int[][] {{1, 10}, {10, 190}, {180, 190}};
+		for (int[] ranges : timepoints) {
+			start = ranges[0];
+			end = ranges[1];
+			sb.append(String.format("%1d-%2d\n", start, end));
+			for (int i = 0; i < 16; i++) {
+				for (int j = 0; j < 24; j++) {
+					sb.append(String.format("%1f, ", test.wells[j][i].getMax(start, end	)));
+				}
+				sb.append("\n");
+			}
+			sb.append("\n");
+		}
+		String output = "TCR15063001 Max.csv";
+		writeFile(output, sb.toString());
 		// for (Double time : t.ts.keySet()) {
 		// 	System.out.println(String.format("%1f, %2f", time, t.ts.get(time)));
 		// }

@@ -146,9 +146,12 @@ public class Plate {
 			}
 			sb.append("\n");
 		}
-		String output = String.format("%1s.csv", filename);
-		writeFile(output, sb.toString());
+		String output = String.format("%1s maxs.csv", filename);
+		writeFile(OUTPUT_DIR + output, sb.toString());
     }
+
+	private static final String INPUT_DIR = "test_files/";
+	private static final String OUTPUT_DIR = "output/";
 
 	/**
 	 * A simple testing suite for the Plate class
@@ -156,10 +159,11 @@ public class Plate {
 	 * @param args has no intended purpose
 	 */
 	public static void main(String[] args) {
-		String[] files = {"11.TXT", "12.TXT", "13.TXT", "14.TXT", "21.TXT", "22.TXT", "23.TXT", 
-						  "24.TXT", "31.TXT", "32.TXT", "33.TXT", "34.TXT", "35.TXT"};
-		for (String file : files) {
-			writeMaxFile(file, 10);
+		File input = new File(INPUT_DIR);
+		File[] files = input.listFiles();
+
+		for (File file : files) {
+			writeMaxFile(file.getName(), 10);
 		}
 		// String filename = "test_files/TCR15062901RAW.TXT";
 		// Plate test = new Plate(filename);

@@ -40,7 +40,7 @@ public class Well {
 	public double getMax(int start, int end) {
 		int startIndex = (int) Math.floor(start/interval);
 		int endIndex = (int) Math.floor(end/interval);
-		double curr = 1 << 32;
+		double curr = 0;
 		for (; startIndex < endIndex; startIndex++) {
 			if (data[startIndex] > curr) {
 				curr = data[startIndex];

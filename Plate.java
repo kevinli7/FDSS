@@ -130,10 +130,12 @@ public class Plate {
      * 
      */
     private static void writeMaxFile(String filename, int addition) {
+    	System.out.println(String.format("Reading file: %1s ...", filename));
     	Plate p = new Plate(FILE_LOCATION + filename);
     	StringBuilder sb = new StringBuilder();
     	int[][] timepoints = new int[][] {{0, addition}, {addition, p.getSize()}};
     	int start, end;
+    	System.out.println("Getting min and max...");
     	for (int[] ranges : timepoints) {
 			start = ranges[0];
 			end = ranges[1];
@@ -147,6 +149,7 @@ public class Plate {
 			sb.append("\n");
 		}
 		String output = String.format("%1s maxs.csv", filename);
+		System.out.println("Writing File...");
 		writeFile(OUTPUT_DIR + output, sb.toString());
     }
 
@@ -165,6 +168,8 @@ public class Plate {
 		for (File file : files) {
 			writeMaxFile(file.getName(), 10);
 		}
+
+		System.out.println("Done!");
 		// String filename = "test_files/TCR15062901RAW.TXT";
 		// Plate test = new Plate(filename);
 		// StringBuilder sb = new StringBuilder();
